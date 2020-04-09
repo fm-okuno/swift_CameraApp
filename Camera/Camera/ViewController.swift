@@ -10,11 +10,10 @@ import UIKit
 
 //ViewControllerクラスに必要なプロトコルを批准させる
 class ViewController: UIViewController,UIImagePickerControllerDelegate,
-                                       UINavigationControllerDelegate
-{
+                                       UINavigationControllerDelegate {
 
     //UIImageViewと接続
-    @IBOutlet private weak var imageView: UIImageView!
+    @IBOutlet weak var imageView: UIImageView!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,6 +32,16 @@ class ViewController: UIViewController,UIImagePickerControllerDelegate,
             picker.sourceType = camera
             picker.delegate = self
             self.present(picker, animated: true)
+        }
+        
+        //撮影後の処理
+        func imagePickerController(_ picker: UIImagePickerController,
+                                   didFinishPickingMediaWithInfo info: [UIImagePickerController.InfoKey : Any]) {
+            
+            let image = info[UIImagePickerController.InfoKey.originalImage] as! UIImage
+            self.imageView.image = image
+            UIImageWriteToSavedPhotosAlbum(image, nil, nil, nil)
+            self.dismiss(animated: true)
         }
     }
 }
